@@ -1,0 +1,18 @@
+# OS/editor junk
+.DS_Store
+*.swp
+.vscode/
+
+# Logs can get huge
+logs/*.log
+logs/*.txt
+
+# Packet captures can be large/sensitive
+captures/*.pcap
+captures/*.pcapng
+
+# Secrets/configs
+.env
+*.key
+*.pem
+*.crt
