@@ -1,12 +1,12 @@
-Magma Docker Deployment Report
-1. Objective
+# Magma Docker Deployment Report
+## 1. Objective
 
 This report documents my process of deploying Magma using Docker inside a virtual machine as part of the LFX Magma mentorship task. The goal of this phase was to set up a working local Magma lab environment, bring up Orc8r and AGW services, register the AGW with Orc8r, and collect proof logs for the deployment.
 
 The deployment was done as a hands-on learning exercise to understand Magma's Docker-based setup, service interactions, gateway registration flow, and common setup/debugging issues.
 
-2. Environment
-2.1 Host and VM Environment
+## 2. Environment
+### 2.1 Host and VM Environment
 Host machine: mediaserver3
 Host OS: Ubuntu 26.04 LTS
 VM software: KVM/QEMU with libvirt
@@ -19,7 +19,7 @@ VM root filesystem: approximately 117 GB
 Network mode: libvirt default NAT network
 VM management IP: 192.168.122.146
 Second VM interface IP: 192.168.122.139
-2.2 Local Network Layout
+### 2.2 Local Network Layout
 
 The deployment used the following layout:
 
@@ -39,14 +39,14 @@ Local Orc8r + Docker-based AGW
 
 The laptop was used for notes, reports, and repository tracking. The VM host ran the Ubuntu VM. The VM itself ran Docker, Orc8r, and AGW.
 
-2.3 Docker and Magma Versions
+### 2.3 Docker and Magma Versions
 Docker version: Docker version 28.1.1, build 4eba377
 Docker Compose version: Docker Compose version v2.35.1
 Magma repository: cloned from the Magma GitHub repository
 Main local repo branch checked: master
 AGW Docker installer/scripts used Magma v1.8
 AGW Docker image version: 1.8.0
-3. VM Preparation
+## 3. VM Preparation
 
 A clean Ubuntu 20.04 VM was created on the mediaserver3 host using KVM/QEMU and libvirt. The VM was created from the Ubuntu 20.04 cloud image and configured using cloud-init.
 
@@ -66,7 +66,7 @@ Final interface state:
 
 eth0: 192.168.122.146
 eth1: 192.168.122.139
-4. Docker Installation
+## 4. Docker Installation
 
 Docker Engine and Docker Compose v2 were installed inside the Ubuntu 20.04 VM using Docker's official Ubuntu apt repository.
 
@@ -78,7 +78,7 @@ docker run hello-world
 
 The installation was successful, and hello-world ran correctly.
 
-5. Magma Repository Setup
+## 5. Magma Repository Setup
 
 The Magma repository was cloned inside the VM:
 
@@ -95,7 +95,7 @@ Important directories used during deployment:
 /etc/magma
 /var/opt/magma/configs
 /var/opt/magma/certs
-6. Orc8r Docker Deployment
+## 6. Orc8r Docker Deployment
 
 The local Orc8r Docker deployment was done from:
 
@@ -143,7 +143,7 @@ The API returned:
 
 This confirmed that the Orc8r REST API was reachable with certificate authentication.
 
-7. AGW Docker Deployment
+## 7. AGW Docker Deployment
 
 The Docker-based AGW deployment used the AGW Docker installer flow, but some manual fixes were required.
 
@@ -173,7 +173,7 @@ td-agent-bit
 
 After fixes, the AGW Docker services were running and mostly healthy.
 
-8. Gateway Registration Flow
+## 8. Gateway Registration Flow
 
 The following objects were created through the Orc8r API:
 
@@ -200,8 +200,8 @@ The tenant control proxy was then configured at:
 
 After the tenant and control proxy were configured, AGW registration/check-in succeeded.
 
-9. Issues Encountered and Resolutions
-9.1 Orc8r Docker build/run order
+## 9. Issues Encountered and Resolutions
+### 9.1 Orc8r Docker build/run order
 
 Issue:
 
@@ -220,7 +220,7 @@ Potential improvement:
 
 Add a documentation note clarifying this order.
 
-9.2 Fluentd Docker build failed due Ruby gem dependency drift
+### 9.2 Fluentd Docker build failed due Ruby gem dependency drift
 
 Issue:
 
@@ -242,7 +242,7 @@ Potential improvement:
 
 Pin compatible gem versions or update the Fluentd image.
 
-9.3 AGW installer assumed specific interface names
+### 9.3 AGW installer assumed specific interface names
 
 Issue:
 
@@ -262,7 +262,7 @@ Potential improvement:
 
 Improve interface detection or document how to adapt interface names in non-cloud VM environments.
 
-9.4 AGW installer used legacy docker-compose
+### 9.4 AGW installer used legacy docker-compose
 
 Issue:
 
@@ -280,7 +280,7 @@ Potential improvement:
 
 Update scripts or documentation for Docker Compose v2 and avoid stopping unrelated containers.
 
-9.5 Minimal control_proxy.yml was insufficient
+### 9.5 Minimal control_proxy.yml was insufficient
 
 Issue:
 
@@ -307,7 +307,7 @@ Potential improvement:
 
 Provide a complete local Docker AGW control_proxy.yml example in the docs.
 
-9.6 AGW containers needed hostname mappings
+### 9.6 AGW containers needed hostname mappings
 
 Issue:
 
@@ -330,7 +330,7 @@ Potential improvement:
 
 Document required hostname mappings for single-VM local Docker deployments.
 
-9.7 Gateway registration required tenant and tenant control_proxy setup
+### 9.7 Gateway registration required tenant and tenant control_proxy setup
 
 Issue:
 
@@ -356,7 +356,7 @@ Potential improvement:
 
 Update gateway registration docs to explicitly mention numeric tenant ID and tenant control_proxy prerequisite.
 
-9.8 Gateway creation required an upgrade tier
+### 9.8 Gateway creation required an upgrade tier
 
 Issue:
 
@@ -376,7 +376,7 @@ Potential improvement:
 
 Add a gateway creation API example that includes the required tier.
 
-9.9 Network creation required DNS config
+### 9.9 Network creation required DNS config
 
 Issue:
 
@@ -400,7 +400,7 @@ Potential improvement:
 
 Add a complete minimal network creation JSON example to the docs.
 
-10. Final Verification
+## 10. Final Verification
 
 After registration and service restart, AGW service status was captured with:
 
