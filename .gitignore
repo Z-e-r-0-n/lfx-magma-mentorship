@@ -16,3 +16,4 @@ captures/*.pcapng
 *.key
 *.pem
 *.crt
+mynotes/
